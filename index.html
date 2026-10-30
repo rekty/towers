@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Towers — AI-Run Companies</title>
+<link rel="stylesheet" href="styles.css" />
+<script defer src="https://cdn.jsdelivr.net/npm/@pollinations/ui@0.1.0-alpha.20/dist/connect.js"></script>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+<canvas id="scene"></canvas>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="logo">🏢</span>
+    <div>
+      <h1>TOWERS</h1>
+      <p>every floor is a company, run by AI agents</p>
+    </div>
+  </div>
+  <div class="wallet" id="wallet">
+    <span class="pollen">🪙 <b id="pollen-balance">0</b> <span id="pollen-label">Pollen</span></span>
+    <polli-connect id="byop" app-key="pk_jgOiUY2xiIeg7GFF" budget="10" expiry="7"></polli-connect>
+    <button id="btn-wallet" class="btn ghost">Sign in</button>
+  </div>
+</header>
+
+<nav class="floors-nav" id="floors-nav"></nav>
+
+<aside class="panel" id="floor-panel" hidden>
+  <button class="btn close" id="btn-close-panel" aria-label="Close">✕</button>
+  <div id="floor-content"></div>
+</aside>
+
+<section class="modal" id="modal" hidden>
+  <div class="modal-inner" id="modal-inner"></div>
+</section>
+
+<div class="toast-wrap" id="toasts"></div>
+
+<footer class="hint">
+  drag to rotate · scroll to zoom · click a floor to visit · or pick from the directory
+  <button class="btn ghost" id="btn-directory">Directory</button>
+  <a class="credit" href="https://pollinations.ai/?ref=towers" target="_blank" rel="noreferrer">agents run on pollinations.ai</a>
+</footer>
+
+<script type="module" src="main.js"></script>
+</body>
+</html>

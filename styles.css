@@ -1,0 +1,182 @@
+:root {
+  --bg: #0d1017;
+  --panel: #161b26;
+  --panel-2: #1d2432;
+  --line: #2a3242;
+  --text: #e6ebf5;
+  --muted: #8b95a8;
+  --accent: #7c5cff;
+  --accent-2: #33d6c0;
+  --pollen: #ffcf4d;
+  --danger: #ff5d73;
+  --ok: #5ce08a;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  overflow: hidden;
+}
+
+#scene { position: fixed; inset: 0; display: block; }
+
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 20px;
+  background: linear-gradient(180deg, rgba(13,16,23,.92), rgba(13,16,23,0));
+  pointer-events: none;
+  z-index: 10;
+}
+.topbar > * { pointer-events: auto; }
+.brand { display: flex; gap: 12px; align-items: center; }
+.brand .logo { font-size: 30px; }
+.brand h1 { margin: 0; font-size: 20px; letter-spacing: 3px; }
+.brand p { margin: 2px 0 0; font-size: 12px; color: var(--muted); }
+
+.wallet { display: flex; gap: 12px; align-items: center; }
+.pollen { font-size: 15px; }
+.pollen b { color: var(--pollen); font-variant-numeric: tabular-nums; }
+
+.btn {
+  border: 1px solid var(--line);
+  background: var(--panel-2);
+  color: var(--text);
+  padding: 8px 14px;
+  border-radius: 9px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: .15s;
+}
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.ghost { background: transparent; }
+.btn.close { position: absolute; top: 10px; right: 10px; }
+.btn[disabled] { opacity: .45; cursor: not-allowed; }
+
+.floors-nav {
+  position: fixed; left: 20px; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 6px; z-index: 9;
+}
+.floors-nav button {
+  display: flex; gap: 8px; align-items: center;
+  background: rgba(22,27,38,.85);
+  border: 1px solid var(--line);
+  color: var(--text);
+  padding: 7px 11px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: .15s;
+}
+.floors-nav button:hover { border-color: var(--accent-2); transform: translateX(3px); }
+.floors-nav .fl-num { color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.panel {
+  /* Below the top bar, so the Pollen wallet and Connect button stay reachable. */
+  position: fixed; top: 76px; right: 0; bottom: 0;
+  width: min(430px, 94vw);
+  background: var(--panel);
+  border-left: 1px solid var(--line);
+  border-top-left-radius: 12px;
+  padding: 20px;
+  overflow-y: auto;
+  z-index: 20;
+  animation: slidein .18s ease;
+}
+@keyframes slidein { from { transform: translateX(30px); opacity: 0; } }
+
+.panel h2 { margin: 0 0 4px; font-size: 20px; }
+.panel .tag { color: var(--accent-2); font-size: 12px; letter-spacing: .5px; }
+.panel .muted { color: var(--muted); font-size: 13px; }
+
+.agent-card {
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px;
+  margin: 10px 0;
+}
+.agent-card .head { display: flex; justify-content: space-between; align-items: center; }
+.agent-card .role { font-weight: 600; font-size: 13px; }
+.agent-card .status { font-size: 11px; padding: 2px 8px; border-radius: 20px; border: 1px solid var(--line); }
+.status.idle { color: var(--muted); }
+.status.working { color: var(--accent-2); border-color: var(--accent-2); animation: pulse 1.2s infinite; }
+.status.done { color: var(--ok); border-color: var(--ok); }
+@keyframes pulse { 50% { opacity: .4; } }
+
+.feed { margin-top: 8px; font-size: 12px; line-height: 1.5; color: var(--muted); }
+.feed .entry { padding: 6px 0; border-top: 1px dashed var(--line); }
+
+.decision {
+  background: rgba(124,92,255,.1);
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  padding: 12px;
+  margin: 10px 0;
+}
+.decision .q { font-size: 13px; margin-bottom: 8px; }
+.decision .opts { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.metric-row { display: flex; justify-content: space-between; font-size: 13px; padding: 5px 0; }
+.metric-row span:last-child { font-variant-numeric: tabular-nums; }
+
+.modal {
+  position: fixed; inset: 0; z-index: 40;
+  background: rgba(6,8,13,.7);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+}
+.modal-inner {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 22px;
+  width: min(560px, 100%);
+  max-height: 86vh; overflow-y: auto;
+}
+.modal-inner h2 { margin-top: 0; }
+
+.field { margin: 10px 0; }
+.field label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 5px; }
+.field input, .field textarea, .field select {
+  width: 100%; background: var(--panel-2); color: var(--text);
+  border: 1px solid var(--line); border-radius: 8px; padding: 9px 11px; font-size: 13px;
+  font-family: inherit;
+}
+
+.dir-list { display: grid; gap: 10px; }
+.dir-item {
+  display: flex; gap: 12px; align-items: center;
+  background: var(--panel-2); border: 1px solid var(--line);
+  border-radius: 10px; padding: 11px; cursor: pointer; transition: .15s;
+}
+.dir-item:hover { border-color: var(--accent-2); }
+.dir-item .emoji { font-size: 24px; }
+.dir-item .name { font-weight: 600; font-size: 14px; }
+.dir-item .desc { color: var(--muted); font-size: 12px; }
+
+.toast-wrap { position: fixed; bottom: 70px; left: 50%; transform: translateX(-50%); z-index: 50; display: grid; gap: 8px; }
+.toast {
+  background: var(--panel-2); border: 1px solid var(--line);
+  padding: 10px 16px; border-radius: 10px; font-size: 13px;
+  animation: slidein .2s ease;
+}
+.toast.ok { border-color: var(--ok); }
+.toast.err { border-color: var(--danger); }
+
+.hint {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  padding: 12px 20px; text-align: center;
+  color: var(--muted); font-size: 12px;
+  background: linear-gradient(0deg, rgba(13,16,23,.92), rgba(13,16,23,0));
+  z-index: 8;
+}
+.hint .btn { margin-left: 12px; }
+.hint .credit { margin-left: 12px; color: var(--accent); text-decoration: none; }
+.hint .credit:hover { text-decoration: underline; }
