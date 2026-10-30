@@ -24,7 +24,7 @@ app owner. Disconnect and the tower falls back to demo Pollen so it stays playab
 
 Nothing secret ships in the page: the only key in the HTML is the publishable app key
 (`pk_…`) the consent screen needs, and the model call itself is assembled in the Pages
-Function.
+Function, which posts to `https://gen.pollinations.ai/v1/chat/completions`.
 
 ## What's inside
 
