@@ -1,29 +1,26 @@
 #!/usr/bin/env sh
-# Publishes one Pollinations agent per company. Requires a key with account:keys
-# and community publisher access for the account that owns the agents.
-#   POLLINATIONS_API_KEY=sk_... sh agents/publish.sh
+# Publishes one Pollinations prompt agent per company. Each floor of the tower
+# then calls `community/rekty/towers-<company>` directly from the page.
+#
+# Needs an authenticated Polli CLI (`npx @pollinations/cli login`) whose account
+# has community publisher access. Creating a name that already exists is an
+# error, so check `npx @pollinations/cli agents list` before re-running; to change
+# an existing agent use `agents update <id> --config agents/<slug>.json`.
 
 set -eu
-: "${POLLINATIONS_API_KEY:?set POLLINATIONS_API_KEY first}"
 
-npx @pollinations/cli agents create --config agents/sky-brew-labs.json \n  --name "towers-sky-brew-labs" --title "Sky Brew Labs" --visibility public
+create() {
+    npx @pollinations/cli agents create         --config "agents/$1.json"         --name "towers-$1"         --title "$2"         --description "$3"         --visibility public
+}
 
-npx @pollinations/cli agents create --config agents/neon-games-studio.json \n  --name "towers-neon-games-studio" --title "Neon Games Studio" --visibility public
-
-npx @pollinations/cli agents create --config agents/verdant-analytics.json \n  --name "towers-verdant-analytics" --title "Verdant Analytics" --visibility public
-
-npx @pollinations/cli agents create --config agents/atlas-freight.json \n  --name "towers-atlas-freight" --title "Atlas Freight" --visibility public
-
-npx @pollinations/cli agents create --config agents/lumen-health.json \n  --name "towers-lumen-health" --title "Lumen Health" --visibility public
-
-npx @pollinations/cli agents create --config agents/quill-co.json \n  --name "towers-quill-co" --title "Quill & Co." --visibility public
-
-npx @pollinations/cli agents create --config agents/orbit-education.json \n  --name "towers-orbit-education" --title "Orbit Education" --visibility public
-
-npx @pollinations/cli agents create --config agents/helios-grid.json \n  --name "towers-helios-grid" --title "Helios Grid" --visibility public
-
-npx @pollinations/cli agents create --config agents/kite-fulfilment.json \n  --name "towers-kite-fulfilment" --title "Kite Fulfilment" --visibility public
-
-npx @pollinations/cli agents create --config agents/prism-media.json \n  --name "towers-prism-media" --title "Prism Media" --visibility public
-
-npx @pollinations/cli agents create --config agents/foundry-legal.json \n  --name "towers-foundry-legal" --title "Foundry Legal" --visibility public
+create sky-brew-labs "Sky Brew Labs" "Staff of a specialty coffee roaster: sourcing, roast profiles, wholesale outreach."
+create neon-games-studio "Neon Games Studio" "Staff of a two-person arcade studio: mechanics, weekend-sized builds, community posts."
+create verdant-analytics "Verdant Analytics" "Staff of a compliance analytics firm: emission rules, executive summaries."
+create atlas-freight "Atlas Freight" "Staff of a regional freight operator: route savings, cold outreach."
+create lumen-health "Lumen Health" "Staff of a clinic network: intake questions and patient-messaging privacy."
+create quill-co "Quill & Co." "Staff of a copywriting studio: taglines and the strategy behind them."
+create orbit-education "Orbit Education" "Staff of a micro-course publisher: curricula and example exercises."
+create helios-grid "Helios Grid" "Staff of a solar operator: yield forecasts and maintenance windows."
+create kite-fulfilment "Kite Fulfilment" "Staff of a warehouse automation buyer: supplier terms, lease-or-buy."
+create prism-media "Prism Media" "Staff of a short-form video studio: hooks, posting experiments."
+create foundry-legal "Foundry Legal" "Staff of a contract triage service: risky clauses, founder-readable summaries."
