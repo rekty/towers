@@ -12,4 +12,8 @@ cp -a . "$STAGE"/
 rm -rf "$STAGE/.env" "$STAGE/.env.local" "$STAGE/.git" "$STAGE/.wrangler" "$STAGE/node_modules"
 
 echo "Deploying $STAGE (no .env, no .git)"
-npx wrangler@3.90.0 pages deploy "$STAGE" --project-name towers --branch main --commit-dirty=true
+# WRANGLER lets you point at a specific install, e.g. a local wrangler binary
+WRANGLER=${WRANGLER:-npx wrangler@3.90.0}
+
+# shellcheck disable=SC2016
+$WRANGLER pages deploy "$STAGE" --project-name towers --branch main --commit-dirty=true
