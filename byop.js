@@ -2,8 +2,8 @@
 //
 // The <polli-connect> widget from @pollinations/ui runs the OAuth code flow and
 // keeps the user's scoped sk_ key in sessionStorage. This module is the only
-// place the rest of the app reads it from: agent runs forward it to /api/agent,
-// which spends the visitor's Pollen instead of the app owner's.
+// place the rest of the app reads it from: agent runs send it straight to
+// gen.pollinations.ai, so a run is billed to the visitor and never to the owner.
 
 const el = document.getElementById("byop");
 

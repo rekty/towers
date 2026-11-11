@@ -288,8 +288,7 @@ modal.addEventListener("click", (e) => { if (e.target === modal) modal.hidden = 
 function openSignIn() {
   openModal(`
     <h2>Sign in</h2>
-    <p class="muted">Name your owner for the tower. Agent runs are paid by the Pollen wallet you
-    connect at the top right — with no wallet connected they run on demo Pollen instead.</p>
+    <p class="muted">Name your owner for the tower. Agent runs are paid by the Pollen wallet you        connect at the top right; agent runs are only sent when a wallet is connected.</p>
     <div class="field"><label>Your name</label><input id="si-name" placeholder="e.g. Nadia" /></div>
     <div style="display:flex;gap:8px;margin-top:14px">
       <button class="btn primary" id="si-go">Enter the tower</button>
@@ -436,23 +435,33 @@ const statuses = {};
 
 async function runWorkday(floor) {
   if (activeRuns.has(floor.id)) return;
+  if (!isConnected()) {
+    toast("Connect your Pollen wallet to run agents.", "err");
+    return;
+  }
   activeRuns.add(floor.id);
   statuses[floor.id] = floor.agents.map(() => "working");
   renderFloor();
 
   for (let i = 0; i < floor.agents.length; i++) {
     const agent = floor.agents[i];
-    if (!isConnected() && !spend(agent.cost)) {
-      toast("Not enough Pollen to finish the workday.", "err");
+    if (!spend(agent.cost)) {
+      toast("Not enough demo Pollen to finish the workday.", "err");
       break;
     }
     renderWallet();
-    const { output, live } = await runAgent(floor, agent);
+    const { output, error } = await runAgent(floor, agent);
+    if (error) {
+      // Nothing is invented on failure: the run is reported and skipped.
+      statuses[floor.id][i] = "idle";
+      toast(`${agent.role}: ${error}`, "err");
+      if (activeFloor?.id === floor.id) renderFloor();
+      continue;
+    }
     statuses[floor.id][i] = "done";
     recordAgentRun(floor.id, agent.role, output, agent.cost);
     if (activeFloor?.id === floor.id) renderFloor();
-    if (!live) console.info("[towers] demo fallback used for", agent.role);
-    if (isConnected()) refreshBalance();
+    refreshBalance();
   }
 
   statuses[floor.id] = floor.agents.map(() => "idle");

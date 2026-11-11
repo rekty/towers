@@ -19,12 +19,14 @@ Built for [QUEST #17999](https://github.com/pollinations/pollinations/issues/179
 The **Pollinations Connect** button in the top bar runs the OAuth code flow through
 [`@pollinations/ui`](https://www.npmjs.com/package/@pollinations/ui) and hands back a scoped
 `sk_` key with a 10-point budget and a 7-day expiry. That key stays in `sessionStorage`, and
-every agent run forwards it to `/api/agent`, so the run is billed to the visitor, not to the
-app owner. Disconnect and the tower falls back to demo Pollen so it stays playable.
+every agent run sends it straight to `https://gen.pollinations.ai/v1/chat/completions`, so the
+run is billed to the visitor, not to the app owner. Without a connected wallet no agent run is
+sent at all, and a failed run is reported as a failure instead of being filled with sample text.
 
 Nothing secret ships in the page: the only key in the HTML is the publishable app key
-(`pk_…`) the consent screen needs, and the model call itself is assembled in the Pages
-Function, which posts to `https://gen.pollinations.ai/v1/chat/completions`.
+(`pk_…`) the consent screen needs. There is no server function and no owner key — each floor
+calls its own published agent (`community/rekty/towers-<company>`) directly, and `agents/`
+holds the agent configs plus the script that publishes them.
 
 ## What's inside
 
@@ -34,8 +36,8 @@ Function, which posts to `https://gen.pollinations.ai/v1/chat/completions`.
 | Companies | `data.js` | 12 floors of businesses + the one vacant office |
 | Game state | `state.js` | Demo wallet, revenue/reputation, agent log, decision queue (localStorage) |
 | Wallet | `byop.js` | Reads the connect widget's key, fetches the live Pollen balance |
-| Agent client | `api.js` | Calls `/api/agent` with the visitor's key; labelled DEMO fallback without one |
-| Proxy | `functions/api/agent.js` | Cloudflare Pages Function — assembles the model call, forwards the visitor's key |
+| Agent client | `api.js` | Calls `community/rekty/towers-<company>` with the visitor's key; failures surface as failures |
+| Agents | `agents/` | One prompt agent per company, plus `publish.sh` to create them |
 | Local server | `server.mjs` | Zero-dependency dev server (static + the same proxy) |
 
 ## Run locally
@@ -46,9 +48,9 @@ node server.mjs
 # → http://127.0.0.1:4173
 ```
 
-Agent runs need a Pollen wallet: click **Pollinations Connect**. For a local key instead, put
-`POLLINATIONS_API_KEY=sk_yourkey` in `towers/.env` (gitignored) and restart — the proxy prefers
-the visitor's own key over it.
+Agent runs need a Pollen wallet: click **Pollinations Connect**. The app holds no key of its
+own, so nothing local can stand in for it. The eleven agents have to be published once (see
+[`agents/README.md`](agents/README.md)) before a run can succeed.
 
 `.env` is gitignored. **Never commit an `sk_` key or paste one into browser code.**
 
