@@ -8,7 +8,7 @@ person and their AI agents. The agents do the daily work (research, outreach, re
 to the owner. Visitors rotate a 3D tower, ride between floors, step into any office, browse
 the directory and apply to rent the next office.
 
-Live: **https://towers-3fx.pages.dev/**
+Live: **https://towers-ei1.pages.dev/**
 
 ![Towers](assets/screenshot.png)
 

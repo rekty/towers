@@ -8,7 +8,7 @@ Rotate a 3D tower, ride to any floor and run the workday: agents on Pollinations
 
 ### App URL
 
-https://towers-3fx.pages.dev/
+https://towers-ei1.pages.dev/
 
 ### GitHub Repository URL
 
