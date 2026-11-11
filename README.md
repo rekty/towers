@@ -38,7 +38,7 @@ holds the agent configs plus the script that publishes them.
 | Wallet | `byop.js` | Reads the connect widget's key, fetches the live Pollen balance |
 | Agent client | `api.js` | Calls `community/rekty/towers-<company>` with the visitor's key; failures surface as failures |
 | Agents | `agents/` | One prompt agent per company, plus `publish.sh` to create them |
-| Local server | `server.mjs` | Zero-dependency dev server (static + the same proxy) |
+| Local server | `server.mjs` | Zero-dependency static dev server; the page calls Pollinations itself |
 
 ## Run locally
 
@@ -52,7 +52,8 @@ Agent runs need a Pollen wallet: click **Pollinations Connect**. The app holds n
 own, so nothing local can stand in for it. The eleven agents have to be published once (see
 [`agents/README.md`](agents/README.md)) before a run can succeed.
 
-`.env` is gitignored. **Never commit an `sk_` key or paste one into browser code.**
+The dev server reads no `.env`, and nothing here needs an owner key. **Never commit an `sk_` key
+or paste one into browser code.**
 
 ## How the loop plays
 
@@ -67,10 +68,12 @@ own, so nothing local can stand in for it. The eleven agents have to be publishe
 ## Deploy
 
 ```bash
-npx wrangler pages deploy . --project-name towers
+npx wrangler@3.90.0 pages deploy . --project-name towers --branch main
 ```
 
-`wrangler.toml` points Pages at this folder, and `functions/` is picked up automatically.
+`wrangler.toml` points Pages at this folder. There is no `functions/` directory: the page
+calls the agent models directly, so a deploy only uploads these static files.
+Use `--branch main`, otherwise the upload lands as a preview deployment instead of production.
 The app key's redirect URI must be the deployed origin (`https://<project>.pages.dev/`).
 
 ## License
