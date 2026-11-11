@@ -68,8 +68,12 @@ or paste one into browser code.**
 ## Deploy
 
 ```bash
-npx wrangler@3.90.0 pages deploy . --project-name towers --branch main
+sh deploy.sh
 ```
+
+`deploy.sh` copies the folder to a staging directory without `.env`, `.git` or
+`.wrangler` and deploys that. Do not deploy `.` directly: Pages uploads every file
+and ignores `.gitignore`, so a leftover `.env` becomes a public `/.env`.
 
 `wrangler.toml` points Pages at this folder. There is no `functions/` directory: the page
 calls the agent models directly, so a deploy only uploads these static files.
