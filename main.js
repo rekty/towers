@@ -262,8 +262,13 @@ function toast(msg, kind = "") {
 function renderWallet() {
   const s = getState();
   const wallet = isConnected() ? liveBalance() : null;
-  $("#pollen-balance").textContent = (wallet === null ? s.pollen : wallet).toFixed(2);
-  $("#pollen-label").textContent = isConnected() ? "Pollen (yours)" : "Pollen (demo)";
+  const connected = isConnected();
+  $("#pollen-balance").textContent = connected
+    ? (wallet === null ? s.pollen : wallet).toFixed(2)
+    : "—";
+  $("#pollen-label").textContent = connected
+    ? "Pollen (yours)"
+    : "Pollen (not connected)";
   $("#btn-wallet").textContent = s.signedIn ? s.ownerName : "Sign in";
 }
 onByopChange(({ connected }) => {
@@ -271,7 +276,7 @@ onByopChange(({ connected }) => {
   toast(
     connected
       ? "Pollen wallet connected — agent runs now spend your own Pollen."
-      : "Pollen wallet disconnected. Back to demo Pollen.",
+      : "Pollen wallet disconnected. Runs are paused until you connect again.",
     connected ? "ok" : ""
   );
 });
@@ -446,7 +451,7 @@ async function runWorkday(floor) {
   for (let i = 0; i < floor.agents.length; i++) {
     const agent = floor.agents[i];
     if (!spend(agent.cost)) {
-      toast("Not enough demo Pollen to finish the workday.", "err");
+      toast("Not enough Pollen to finish the workday.", "err");
       break;
     }
     renderWallet();

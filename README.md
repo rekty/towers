@@ -34,7 +34,7 @@ holds the agent configs plus the script that publishes them.
 |---|---|---|
 | 3D tower | `main.js` | Three.js scene: drag to rotate, scroll to zoom, click a floor, elevator follows your view |
 | Companies | `data.js` | 12 floors of businesses + the one vacant office |
-| Game state | `state.js` | Demo wallet, revenue/reputation, agent log, decision queue (localStorage) |
+| Game state | `state.js` | Wallet balance, revenue/reputation, agent log, decision queue (localStorage) |
 | Wallet | `byop.js` | Reads the connect widget's key, fetches the live Pollen balance |
 | Agent client | `api.js` | Calls `community/rekty/towers-<company>` with the visitor's key; failures surface as failures |
 | Agents | `agents/` | One prompt agent per company, plus `publish.sh` to create them |
@@ -57,13 +57,13 @@ or paste one into browser code.**
 
 ## How the loop plays
 
-1. Connect a Pollen wallet (or sign in for the demo 12 Pollen).
+1. Connect a Pollen wallet — agent runs are paid from it, and no run starts without one.
 2. Open a floor, press **Run the workday** — each agent spends its cost, calls Pollinations,
    and its report lands in the activity feed with a revenue delta.
 3. ~30% of runs surface a **decision** (Approve / Revise / Hold) — the human part of the job.
    Approving pays reputation and revenue.
-4. **Advance to next day** in the wallet for +1 demo Pollen; revenue drifts daily.
-5. Floor 1 is vacant: submit a rental application (0.5 demo Pollen) to claim it.
+4. **Advance to next day** in the wallet; revenue drifts daily.
+5. Floor 1 is vacant: submit a rental application (0.5 Pollen) to claim it.
 
 ## Deploy
 
