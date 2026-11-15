@@ -5,7 +5,10 @@ own published agent instead of a model the page happens to pick. The callable id
 is `community/rekty/towers-<company>`, which is exactly what `api.js` sends.
 
 All eleven are published and public, and each one has been called once with a real
-prompt (see the table). `publish.sh` recreates them from the JSON configs; it needs
+prompt (see the table). Every config uses **`openai/gpt-5.4-nano`**, which is a free
+model (`paid_only: false` on `GET /models`), so a visitor on free Pollen can run a
+floor. An earlier draft pointed at `openai/gpt-4o-mini`, which is paid-only and
+would have 402'd for those visitors. `publish.sh` recreates them from the JSON configs; it needs
 an authenticated Polli CLI whose account has community publisher access:
 
 ```sh
